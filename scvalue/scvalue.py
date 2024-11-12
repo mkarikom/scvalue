@@ -214,7 +214,7 @@ class SCValue:
         self.adata.obs['dv'] = dv_df['dv']
         obs_df = self.adata.obs.copy()
         obs_df = obs_df.sort_values(by='dv', ascending=False)
-        info_df = obs_df.groupby(self.cell_type_key)['dv'].describe()
+        info_df = obs_df.groupby(self.cell_type_key, observed=False)['dv'].describe()
         self.dv = self.adata.obs[[self.cell_type_key, 'dv']].copy()
 
         if self.write_dv:
