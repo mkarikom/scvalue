@@ -1,7 +1,7 @@
 # scValue
 
 ## Desciption
-`scValue` is a Python package designed for efficient value-based subsampling of large scRNA-seq datasets. It prioritises cells of higher value (indicative of greater utility for cell type identification) over cells of lower value and allocates more representation to cell types with greater value variability in the resulting subsamples, which support effective downstream machine/deep learning tasks. 
+`scValue` is a Python package that performs value-based subsampling of large scRNA-seq datasets for machine and deep learning (ML/DL) tasks. It uses out-of-bag (OOB) estimates from a random forest to assign each cell a "value", reflecting its importance in distinguishing its cell type. By prioritising cells with higher values and allocating more representation to cell types with greater value variability, `scValue` ensures that critical biological signals are retained in the resulting subsamples. This direct linkage between subsampling and classification performance enables `scValue` to target the most informative cells for efficient downstream ML/DL tasks.
 
 The package has been implemented using `Python` 3.10, `scikit-learn` 1.5.2, `SciPy` 1.14.0, `NumPy` 1.26.4, `pandas` 1.5.3, and `joblib` 1.4.2. Experiments in the paper were conducted using `Scanpy` 1.10.2 and `AnnData` 0.10.8.
 
@@ -53,7 +53,7 @@ scv.value() # perform value computation and value-based subsampling
 adata_sub = scv.adata_sub
 ```
 
-`adata_sub` can be plotted using `plot_umap` in `reproducibility/eval_time_hd_gini.py` to reproduce the demo (Section 3.1) in the paper. All datasets used in the paper are publicly available, as detailed in Supplementary Section S1.
+`adata_sub` can be plotted using `plot_umap` in `reproducibility/eval_time_hd_gini.py` to reproduce the mTC demonstration in the paper. All datasets used in our study are publicly available, as detailed in the data availability section.
 
 ## Reference
-Li Huang & Dongsheng Chen, scValue: value-based subsampling of large-scale single-cell transcriptomic data. 2024.
+Li Huang, Weikang Gong, Dongsheng Chen, scValue: value-based subsampling of large-scale single-cell transcriptomic data for machine and deep learning tasks. 2025.
