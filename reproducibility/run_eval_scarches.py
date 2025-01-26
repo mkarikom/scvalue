@@ -95,7 +95,7 @@ def eval_scarches(methods, sketch_size, seed):
     folder = 'experiments/seed%d' % (seed)
     if not os.path.exists(folder):
         os.makedirs(folder)
-    df.to_csv('experiments/seed%d/pancreas_acc.%d.csv' % (seed, sketch_size), header=True, index=False)
+    df.to_csv('experiments/seed%d/acc.%d.csv' % (seed, sketch_size), header=True, index=False)
 
 sketch_percent_list = [0.02, 0.04, 0.06, 0.08, 0.1]
 sketch_size_list = [int(16941 * x) for x in sketch_percent_list]
