@@ -24,7 +24,7 @@ The example dataset of 89,429 mouse T cells (mTC) can be downloaded from https:/
 ```{python}
 adata = sc.read_h5ad('mTC.h5ad')
 sc.pp.highly_variable_genes(adata, n_top_genes=3000)
-sc.pp.pca(adata, n_comps=50, use_highly_variable=True)
+sc.pp.pca(adata, n_comps=50)
 ```
 
 ### Subsample by scValue
