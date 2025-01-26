@@ -13,21 +13,21 @@ warnings.simplefilter(action='ignore', category=UserWarning)
 
 torch.set_printoptions(precision=3, sci_mode=False, edgeitems=7)
 
-target_adata = sc.read_h5ad('scarches_data/pbmc_target.h5ad')
+target_adata = sc.read_h5ad('scanvi_data/pbmc_target.h5ad')
 
-path = 'experiments/scarches_pbmc/'
+path = 'experiments/scanvi_pbmc/'
 methods = ['Uniform', 'GeoSketch', 'Sphetcher', 'Hopper', 'KH', 'scSampler', 'scValue'] 
 
 condition_key = 'Method'
 cell_type_key = 'CellType'
 
-def eval_scarches(methods, sketch_size, seed):
+def eval_scanvi(methods, sketch_size, seed):
     np.random.seed(seed)
     torch.manual_seed(seed)
 
     acc_list = []
     for method in methods:
-        print('scarches on', method)
+        print('scANVI on', method)
         source_adata = sc.read_h5ad(path + method + '.%d.h5ad' % (sketch_size))
         print(source_adata)
 
@@ -58,7 +58,7 @@ def eval_scarches(methods, sketch_size, seed):
         reference_latent.obs['predictions'] = scanvae.predict()
         print("Train Acc: {}".format(np.mean(reference_latent.obs.predictions == reference_latent.obs.cell_type)))
 
-        ref_path = 'scarches_data/'
+        ref_path = 'scanvi_data/'
         scanvae.save(ref_path, overwrite=True)
 
         model = sca.models.SCANVI.load_query_data(
@@ -102,4 +102,4 @@ sketch_size_list = [int(16941 * x) for x in sketch_percent_list]
 for i in range(10):
     seed = 42 + i
     for sketch_size in sketch_size_list:
-        eval_scarches(methods, sketch_size, seed)
+        eval_scanvi(methods, sketch_size, seed)
