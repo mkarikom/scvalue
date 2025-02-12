@@ -15,9 +15,9 @@ early_stopping_kwargs = {
     "early_stopping_metric": "val_prototype_loss",
     "mode": "min",
     "threshold": 0,
-    "patience": 20,
+    "patience": 5,
     "reduce_lr": True,
-    "lr_patience": 13,
+    "lr_patience": 3,
     "lr_factor": 0.1,
 }
 
