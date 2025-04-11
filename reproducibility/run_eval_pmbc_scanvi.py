@@ -1,11 +1,12 @@
 import scanpy as sc
-import torch
 import scarches as sca
 from scarches.dataset.trvae.data_handling import remove_sparsity
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
+import torch
+import pytorch_lightning as pl
 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -22,8 +23,12 @@ condition_key = 'Method'
 cell_type_key = 'CellType'
 
 def eval_scanvi(methods, sketch_size, seed):
+    
     np.random.seed(seed)
     torch.manual_seed(seed)
+    if torch.cuda.is_available(): 
+        torch.cuda.manual_seed_all(seed)
+    pl.seed_everything(seed)
 
     acc_list = []
     for method in methods:
