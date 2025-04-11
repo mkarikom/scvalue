@@ -3,6 +3,8 @@ import scanpy as sc
 import pandas as pd
 from scarches.models.scpoli import scPoli
 import os
+import torch
+import pytorch_lightning as pl 
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -29,7 +31,11 @@ path = 'experiments/mbrain/'
 def eval_ctp(methods, pretrain_epoch, finetune_epoch, sketch_size, seed, target_adata=target_adata, path=path):
 
     np.random.seed(seed)
-
+    torch.manual_seed(seed) 
+    if torch.cuda.is_available(): 
+        torch.cuda.manual_seed_all(seed)
+    pl.seed_everything(seed)
+    
     n_epochs = pretrain_epoch + finetune_epoch
 
     acc_list = []
