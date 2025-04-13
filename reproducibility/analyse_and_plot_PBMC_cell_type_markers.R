@@ -15,7 +15,6 @@ colors <- c('scValue-core' = '#FF4500',
 ##########################
 # find top3 markers for each cell type
 dat <- readRDS('rds_data/full_data.rds')
-dat[["RNA"]]$data <- dat[["RNA"]]$counts
 
 cell_types <- unique(dat$CellType)
 Idents(dat) <- dat$CellType
@@ -123,7 +122,7 @@ for (cell_type in names(marker_top3_list)) {
     filename = paste0(cell_type, '.tiff'),   
     plot     = combined_plot,         
     width    = 12,                
-    height   = 6,                 
+    height   = 4,                 
     dpi      = 300,     
     bg = 'white'
   )
