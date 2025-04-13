@@ -19,7 +19,7 @@ label_df <- cell_meta[4:19]
 
 ############################################################
 # function for deconvolution
-deconvolve_music <- function(eset, method, sketch_size){
+deconvolution_music <- function(eset, method, sketch_size){
   # ref
   if (method == "full_data") {
     data <- read_h5ad(paste0("data/", method, ".h5ad" ))
@@ -116,7 +116,7 @@ compute_mae <- function(df1, df2, method) {
 
 eval_method <- function(method, sketch_size) {
   print(method)
-  df2 <- deconvolve_music(eset, method, sketch_size)
+  df2 <- deconvolution_music(eset, method, sketch_size)
 
   corr_list <- compute_corr(label_df, df2, method)
   print('corr: ')
