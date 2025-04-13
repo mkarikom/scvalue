@@ -1,4 +1,6 @@
 library(Seurat)
+library(ggplot2)
+library(patchwork)
 
 colors <- c('scValue-core' = '#FF4500',
             'scValue' = '#FB61D7', 
