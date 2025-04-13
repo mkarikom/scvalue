@@ -49,7 +49,7 @@ def eval_scanvi(methods, sketch_size, seed):
 
         vae.train(max_epochs=100)
         
-        scanvae = sca.models.SCANVI.from_scvi_model(vae, unlabeled_category = "Unknown")
+        scanvae = sca.models.SCANVI.from_scvi_model(vae, unlabeled_category = "Unassigned")
 
         print("Labelled Indices: ", len(scanvae._labeled_indices))
         print("Unlabelled Indices: ", len(scanvae._unlabeled_indices))
