@@ -1,6 +1,6 @@
 library(Seurat)
 
-colors <- c('scValue-core' = 'orangered',#'#AED581',
+colors <- c('scValue-core' = '#FF4500',
             'scValue' = '#FB61D7', 
             'Uniform' = '#8FB4DC', 
             'GeoSketch' = '#FFDD8E',  
@@ -8,7 +8,7 @@ colors <- c('scValue-core' = 'orangered',#'#AED581',
             'Hopper' = '#AC99D2', 
             'KH' = '#EB7E60', 
             'scSampler' = '#70CDBE',
-            'Full data' = 'gray')
+            'Full data' = '#BEBEBE')
 
 ##########################
 # find top3 markers for each cell type
