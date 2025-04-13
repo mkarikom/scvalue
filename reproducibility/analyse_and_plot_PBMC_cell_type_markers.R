@@ -24,7 +24,7 @@ for (cell_type in cell_types) {
   
   if (cell_type == 'Unassigned') next
   
-  marker_df <- read.csv(paste0('markers/', cell_type, '.csv'))
+  marker_df <- read.csv(paste0('cell_type_specific_markers/', cell_type, '.csv'))
   marker_list <- marker_df$marker
   marker_exist_list <- intersect(marker_list, rownames(dat))
   
