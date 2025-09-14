@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.utils import check_random_state, compute_sample_weight
 from sklearn.utils.parallel import delayed
 from sklearn.utils.multiclass import type_of_target
-from sklearn.utils.validation import _check_sample_weight
+from sklearn.utils.validation import _check_sample_weight, check_X_y
 
 from joblib import Parallel
 
@@ -76,6 +76,9 @@ class SCValue:
     seed : int, default=42
         To initialize a random number generator (RNG) in random forest. Ensure reproducibility.
 
+    return_indices : bool, default=False
+        Whether to return the indices of the selected cells in the original AnnData instead of copying the AnnData to facilitate backed datasets.
+
     Attributes
     ----------
     rf_model : class
@@ -98,6 +101,7 @@ class SCValue:
             prop_sampling=False,
             write_dv=False,
             seed=42,
+            return_indices=False
     ):
         if adata is None:
             raise ValueError('Anndata object is required.')
@@ -129,6 +133,7 @@ class SCValue:
         self.prop_sampling = prop_sampling
         self.write_dv = write_dv
         self.seed = seed
+        self.return_indices = return_indices
 
         np.random.seed(self.seed)
         self.rf_model = self.RFValue(n_estimators=self.n_trees, n_jobs=-1) 
@@ -282,8 +287,11 @@ class SCValue:
                 sampled_indices.extend(obs_df_sub.index[:undersample_size])
         print(f'Done: sketch {self.sketch_size}')
 
-        self.adata_sub = self.adata[sampled_indices].copy()
-        return self.adata_sub
+        if self.return_indices:
+            return self.adata[sampled_indices].obs_names
+        else:
+            self.adata_sub = self.adata[sampled_indices].copy()
+            return self.adata_sub
 
     class SketchWarning(UserWarning):
         pass
@@ -497,14 +505,35 @@ class SCValue:
             if issparse(y):
                 raise ValueError("sparse multilabel-indicator for y is not supported.")
 
-            X, y = self._validate_data(
-                X,
-                y,
-                multi_output=True,
-                accept_sparse="csc",
-                dtype=DTYPE,
-                force_all_finite=False,
-            )
+            validate = getattr(self, "_validate_data", None)
+            if callable(validate):
+                X, y = validate(
+                    X,
+                    y,
+                    multi_output=True,
+                    accept_sparse="csc",
+                    dtype=DTYPE,
+                    force_all_finite=False,
+                )
+            else:
+                # scikit-learn >=1.7 (no _validate_data on estimators)
+                X, y = check_X_y(
+                    X,
+                    y,
+                    multi_output=True,
+                    accept_sparse="csc",
+                    dtype=DTYPE,
+                    force_all_finite=False,
+                )
+
+            # X, y = self._validate_data(
+            #     X,
+            #     y,
+            #     multi_output=True,
+            #     accept_sparse="csc",
+            #     dtype=DTYPE,
+            #     force_all_finite=False,
+            # )
             # _compute_missing_values_in_feature_mask checks if X has missing values and
             # will raise an error if the underlying tree base estimator can't handle missing
             # values. Only the criterion is required to determine if the tree supports
